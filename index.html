@@ -117,7 +117,7 @@ footer a{color:var(--ink)}
 
 <script>
 /* CONFIG : colle ici l’URL Apps Script (Google Sheet) et/ou le lien Google Forms */
-var SHEET_URL="",FORM_URL="";
+var SHEET_URL="https://script.google.com/macros/s/AKfycbz5KAKcL9ZhH0cYu3S9u_rZDhYCkK2LGwd1D6MyyH_9qsUPCWxgU0-bwC5nl4tvsp4o/exec",FORM_URL="";
 /* AVIS : remplace les exemples par de vrais avis de clients, puis mets sample:false */
 var REVIEWS=[{n:"Sara M.",r:"Boutique de mode",t:"Des Reels qui ont vraiment boosté notre visibilité. Équipe réactive et créative.",s:5,sample:true},{n:"Youssef B.",r:"Restaurant",t:"Le shooting était superbe et nos publicités nous apportent de nouveaux clients chaque semaine.",s:5,sample:true},{n:"Imane K.",r:"Salon de beauté",t:"Une stratégie claire et des résultats mesurables. Je recommande.",s:5,sample:true}];
 REVIEWS.forEach(function(v){var c=document.createElement("div");c.className="card rev";var a=document.createElement("div");a.className="stars";a.textContent="★★★★★".slice(0,v.s);var q=document.createElement("q");q.textContent=v.t;var sm=document.createElement("small");sm.textContent=v.n+" · "+v.r;if(v.sample){var e=document.createElement("span");e.className="eg";e.textContent="exemple";sm.appendChild(e)}c.append(a,q,sm);document.getElementById("revs").appendChild(c)});
