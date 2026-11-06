@@ -92,7 +92,7 @@ footer a{color:var(--ink)}
 <section id="reserver">
 <div class="book">
 <h2>Réservez votre appel gratuit</h2>
-<p class="sub">Remplissez le formulaire : votre demande est préparée et envoyée par message Instagram à l’agence.</p>
+<p class="sub">Remplissez le formulaire et nous vous recontactons rapidement.</p>
 <form id="f">
 <div><label for="n">Nom complet</label><input id="n" required autocomplete="name"></div>
 <div><label for="t">Téléphone / WhatsApp</label><input id="t" type="tel" required autocomplete="tel"></div>
@@ -103,9 +103,7 @@ footer a{color:var(--ink)}
 <div class="full"><button class="btn" type="submit">Envoyer ma demande</button></div>
 </form>
 <div id="msg" role="status">
-<b>Presque terminé !</b> Le message Instagram s’ouvre : collez-y ce texte si besoin.
-<textarea id="out" readonly></textarea>
-<a class="btn" id="dm" href="https://ig.me/m/hm_agence_marketing" target="_blank" rel="noopener">Ouvrir le DM Instagram</a> <a class="btn ghost" id="gf" style="display:none" target="_blank" rel="noopener">Formulaire Google</a>
+<b>Merci !</b> Votre demande a bien été envoyée. Nous vous contacterons très bientôt.
 </div>
 </div>
 </section>
@@ -117,11 +115,10 @@ footer a{color:var(--ink)}
 
 <script>
 /* CONFIG : colle ici l’URL Apps Script (Google Sheet) et/ou le lien Google Forms */
-var SHEET_URL="https://script.google.com/macros/s/AKfycbz5KAKcL9ZhH0cYu3S9u_rZDhYCkK2LGwd1D6MyyH_9qsUPCWxgU0-bwC5nl4tvsp4o/exec",FORM_URL="";
+var SHEET_URL="https://script.google.com/macros/s/AKfycbyesLwdOIS_s5iHU2LebvelSM9-edWPwTCf9rRxqKaJDJm8Oamb9l0EOTYRp7T2qYRa/exec",FORM_URL="";
 /* AVIS : remplace les exemples par de vrais avis de clients, puis mets sample:false */
 var REVIEWS=[{n:"Sara M.",r:"Boutique de mode",t:"Des Reels qui ont vraiment boosté notre visibilité. Équipe réactive et créative.",s:5,sample:true},{n:"Youssef B.",r:"Restaurant",t:"Le shooting était superbe et nos publicités nous apportent de nouveaux clients chaque semaine.",s:5,sample:true},{n:"Imane K.",r:"Salon de beauté",t:"Une stratégie claire et des résultats mesurables. Je recommande.",s:5,sample:true}];
 REVIEWS.forEach(function(v){var c=document.createElement("div");c.className="card rev";var a=document.createElement("div");a.className="stars";a.textContent="★★★★★".slice(0,v.s);var q=document.createElement("q");q.textContent=v.t;var sm=document.createElement("small");sm.textContent=v.n+" · "+v.r;if(v.sample){var e=document.createElement("span");e.className="eg";e.textContent="exemple";sm.appendChild(e)}c.append(a,q,sm);document.getElementById("revs").appendChild(c)});
-if(FORM_URL){var gf=document.getElementById("gf");gf.href=FORM_URL;gf.style.display="inline-block"}
 var times=["10:00","11:00","14:00","15:00","16:00","17:00"],chosen=times[0],box=document.getElementById("slots");
 document.getElementById("y").textContent=new Date().getFullYear();
 var d=document.getElementById("d");d.min=new Date().toISOString().slice(0,10);
@@ -130,9 +127,7 @@ b.onclick=function(){chosen=t;[].forEach.call(box.children,function(x){x.setAttr
 document.getElementById("f").addEventListener("submit",function(e){
 e.preventDefault();
 var txt="Bonjour HM, je souhaite réserver un appel.\nNom : "+n.value+"\nTéléphone : "+t.value+"\nService : "+s.value+"\nDate : "+d.value+" à "+chosen+(m.value?"\nProjet : "+m.value:"");
-var out=document.getElementById("out");out.value=txt;
 var box2=document.getElementById("msg");box2.style.display="block";box2.scrollIntoView({block:"center"});
-try{navigator.clipboard.writeText(txt)}catch(x){}
 if(SHEET_URL){try{fetch(SHEET_URL,{method:"POST",mode:"no-cors",body:new URLSearchParams({nom:n.value,tel:t.value,service:s.value,date:d.value,creneau:chosen,projet:m.value})})}catch(x){}}
 });
 </script>
