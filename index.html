@@ -47,6 +47,9 @@ textarea{min-height:90px;resize:vertical}
 .slot[aria-pressed="true"]{background:var(--accent);color:var(--on);border-color:var(--accent)}
 #msg{display:none;margin-top:16px;padding:16px;border-radius:14px;border:1px dashed var(--line);font-size:15px}
 #msg textarea{margin:10px 0}
+#donner .book::before{display:none}
+.rate{display:flex;gap:4px}.rate button{background:none;border:0;padding:2px 4px;font-size:32px;line-height:1;color:var(--line);cursor:pointer}.rate button[aria-pressed="true"]{color:var(--ink)}
+#amsg{display:none;margin-top:16px;padding:16px;border-radius:14px;border:1px dashed var(--line);font-size:15px}
 footer{border-top:1px solid var(--line);padding:28px 0 36px;color:var(--mute);font-size:14px;text-align:center}
 footer a{color:var(--ink)}
 @media(max-width:620px){form{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}.stat b{font-size:20px}.hero{padding-top:40px}}
@@ -103,6 +106,22 @@ section:nth-of-type(2)::before{background-image:url(data:image/webp;base64,UklGR
 
 <section id="avis"><h2>Avis clients</h2><p class="sub">Ce que disent celles et ceux qui nous font confiance.</p><div class="grid" id="revs"></div></section>
 
+<section id="donner">
+<div class="book">
+<h2>Donnez votre avis</h2>
+<p class="sub">Vous avez travaillé avec nous ? Dites-nous ce que vous pensez de nos services.</p>
+<form id="af">
+<div><label for="an">Nom complet</label><input id="an" required autocomplete="name"></div>
+<div><label for="ar">Activité / entreprise (optionnel)</label><input id="ar" placeholder="Ex. : Restaurant, Boutique…"></div>
+<div><label for="as">Service concerné</label><select id="as"><option>Stratégie</option><option>Ads</option><option>Reels</option><option>Shooting</option><option>Pack complet</option></select></div>
+<div><label>Votre note</label><div class="rate" id="rate" role="group" aria-label="Note sur 5"></div></div>
+<div class="full"><label for="at">Votre avis</label><textarea id="at" required placeholder="Racontez-nous votre expérience avec HM…"></textarea></div>
+<div class="full"><button class="btn" type="submit">Envoyer mon avis</button></div>
+</form>
+<div id="amsg" role="status"><b>Merci !</b> Votre avis a bien été envoyé. Il sera publié après validation.</div>
+</div>
+</section>
+
 <section id="reserver">
 <div class="book">
 <h2>Réservez votre appel gratuit</h2>
@@ -133,6 +152,13 @@ var SHEET_URL="",FORM_URL="";
 /* AVIS : remplace les exemples par de vrais avis de clients, puis mets sample:false */
 var REVIEWS=[{n:"Sara M.",r:"Boutique de mode",t:"Des Reels qui ont vraiment boosté notre visibilité. Équipe réactive et créative.",s:5,sample:true},{n:"Youssef B.",r:"Restaurant",t:"Le shooting était superbe et nos publicités nous apportent de nouveaux clients chaque semaine.",s:5,sample:true},{n:"Imane K.",r:"Salon de beauté",t:"Une stratégie claire et des résultats mesurables. Je recommande.",s:5,sample:true}];
 REVIEWS.forEach(function(v){var c=document.createElement("div");c.className="card rev";var a=document.createElement("div");a.className="stars";a.textContent="★★★★★".slice(0,v.s);var q=document.createElement("q");q.textContent=v.t;var sm=document.createElement("small");sm.textContent=v.n+" · "+v.r;if(v.sample){var e=document.createElement("span");e.className="eg";e.textContent="exemple";sm.appendChild(e)}c.append(a,q,sm);document.getElementById("revs").appendChild(c)});
+(function(){var rate=5,rb=document.getElementById("rate");
+for(var i=1;i<=5;i++)(function(i){var b=document.createElement("button");b.type="button";b.textContent="★";b.setAttribute("aria-label",i+" sur 5");b.onclick=function(){rate=i;paint()};rb.appendChild(b)})(i);
+function paint(){[].forEach.call(rb.children,function(b,k){b.setAttribute("aria-pressed",k<rate)})}paint();
+document.getElementById("af").addEventListener("submit",function(e){e.preventDefault();
+var g=function(id){return document.getElementById(id).value};
+if(SHEET_URL){try{fetch(SHEET_URL,{method:"POST",mode:"no-cors",body:new URLSearchParams({type:"avis",nom:g("an"),activite:g("ar"),service:g("as"),note:rate,avis:g("at")})})}catch(x){}}
+var m2=document.getElementById("amsg");m2.style.display="block";m2.scrollIntoView({block:"center"});e.target.reset();rate=5;paint()})})();
 var times=["10:00","11:00","14:00","15:00","16:00","17:00"],chosen=times[0],box=document.getElementById("slots");
 document.getElementById("y").textContent=new Date().getFullYear();
 var d=document.getElementById("d");d.min=new Date().toISOString().slice(0,10);
