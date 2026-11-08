@@ -159,6 +159,8 @@ document.getElementById("af").addEventListener("submit",function(e){e.preventDef
 var g=function(id){return document.getElementById(id).value};
 if(SHEET_URL){try{fetch(SHEET_URL,{method:"POST",mode:"no-cors",body:new URLSearchParams({type:"avis",nom:g("an"),activite:g("ar"),service:g("as"),note:rate,avis:g("at")})})}catch(x){}}
 var m2=document.getElementById("amsg");m2.style.display="block";m2.scrollIntoView({block:"center"});e.target.reset();rate=5;paint()})})();
+/* AVIS PUBLIÉS : charge depuis le Sheet les avis marqués "Oui" */
+if(SHEET_URL){try{fetch(SHEET_URL+"?action=avis").then(function(r){return r.json()}).then(function(list){if(!list||!list.length)return;var g=document.getElementById("revs");g.textContent="";list.forEach(function(v){var c=document.createElement("div");c.className="card rev";var a=document.createElement("div");a.className="stars";a.textContent="★★★★★".slice(0,Math.min(5,Math.max(1,v.s||5)));var q=document.createElement("q");q.textContent=v.t;var sm=document.createElement("small");sm.textContent=v.n+(v.r?" · "+v.r:"");c.append(a,q,sm);g.appendChild(c)})}).catch(function(){})}catch(x){}}
 var times=["10:00","11:00","14:00","15:00","16:00","17:00"],chosen=times[0],box=document.getElementById("slots");
 document.getElementById("y").textContent=new Date().getFullYear();
 var d=document.getElementById("d");d.min=new Date().toISOString().slice(0,10);
